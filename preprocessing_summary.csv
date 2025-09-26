@@ -1,0 +1,13 @@
+Statistic,Value
+Original Missing Values (Age),178 (20.0%)
+Original Missing Values (Embarked),2 (0.2%)
+Original Missing Values (Cabin),851 (95.5%)
+Missing Values After Preprocessing,0 (All handled)
+Original Features,10 original columns
+Engineered Features,13 new features created
+Final Features,23 final features
+Categorical Variables Encoded,"Sex, Embarked, Pclass, Age_Group, Fare_Group"
+Numerical Variables Scaled,"Age, Fare, SibSp, Parch, Family_Size"
+Data Split Ratio,80% train / 20% test
+Feature Engineering Techniques,"One-hot encoding, binning, family features"
+Scaling Method Used,StandardScaler

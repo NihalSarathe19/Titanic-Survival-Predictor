@@ -1,0 +1,25 @@
+Metric,Value
+Dataset Size,891 passengers
+Features after Preprocessing,23 features
+Training Set Size,712 samples
+Test Set Size,179 samples
+Overall Survival Rate,36.1%
+Female Survival Rate,42.7%
+Male Survival Rate,32.6%
+Class 1 Survival Rate,59.6%
+Class 2 Survival Rate,46.5%
+Class 3 Survival Rate,22.1%
+Best Model,Logistic Regression
+Best Model Accuracy,0.7374
+Best Model Precision,0.6667
+Best Model Recall,0.5538
+Best Model F1-Score,0.6050
+Logistic Regression Accuracy,0.7374
+Decision Tree Accuracy,0.6480
+Random Forest Accuracy,0.7039
+SVM Accuracy,0.6927
+Hyperparameter Tuning Improvement,+0.0559
+Cross Validation Score,0.6952
+Training Time (Estimated),< 2 minutes
+Most Important Feature,Fare
+Feature Correlation with Survival,0.238

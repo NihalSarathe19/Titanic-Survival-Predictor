@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚢 Titanic Survival Predictor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🚢 Titanic Survival Predictor</h1>
+            <p class="subtitle">Machine Learning Prediction Demo</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Prediction Form -->
+            <section class="prediction-section">
+                <div class="card">
+                    <div class="card__header">
+                        <h2>Enter Passenger Details</h2>
+                        <p>Fill in the information below to predict survival probability</p>
+                    </div>
+                    <div class="card__body">
+                        <form id="predictionForm" class="prediction-form">
+                            <!-- Passenger Name -->
+                            <div class="form-group">
+                                <label class="form-label" for="passengerName">Passenger Name</label>
+                                <input type="text" id="passengerName" name="passengerName" class="form-control" placeholder="Enter passenger name" required>
+                            </div>
+
+                            <!-- Age -->
+                            <div class="form-group">
+                                <label class="form-label" for="age">Age</label>
+                                <input type="number" id="age" name="age" class="form-control" min="0" max="100" value="30" required>
+                            </div>
+
+                            <!-- Gender -->
+                            <div class="form-group">
+                                <label class="form-label">Gender</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="gender" value="male" required>
+                                        <span class="radio-label">Male</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="gender" value="female" required>
+                                        <span class="radio-label">Female</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Passenger Class -->
+                            <div class="form-group">
+                                <label class="form-label" for="pclass">Passenger Class</label>
+                                <select id="pclass" name="pclass" class="form-control" required>
+                                    <option value="">Select class</option>
+                                    <option value="1">1st Class</option>
+                                    <option value="2">2nd Class</option>
+                                    <option value="3">3rd Class</option>
+                                </select>
+                            </div>
+
+                            <!-- Ticket Fare -->
+                            <div class="form-group">
+                                <label class="form-label" for="fare">Ticket Fare (£)</label>
+                                <input type="number" id="fare" name="fare" class="form-control" min="0" step="0.01" value="32" required>
+                            </div>
+
+                            <!-- Number of Siblings/Spouses -->
+                            <div class="form-group">
+                                <label class="form-label" for="sibsp">Number of Siblings/Spouses</label>
+                                <input type="number" id="sibsp" name="sibsp" class="form-control" min="0" max="8" value="0" required>
+                            </div>
+
+                            <!-- Number of Parents/Children -->
+                            <div class="form-group">
+                                <label class="form-label" for="parch">Number of Parents/Children</label>
+                                <input type="number" id="parch" name="parch" class="form-control" min="0" max="6" value="0" required>
+                            </div>
+
+                            <!-- Port of Embarkation -->
+                            <div class="form-group">
+                                <label class="form-label" for="embarked">Port of Embarkation</label>
+                                <select id="embarked" name="embarked" class="form-control" required>
+                                    <option value="">Select port</option>
+                                    <option value="S">Southampton</option>
+                                    <option value="C">Cherbourg</option>
+                                    <option value="Q">Queenstown</option>
+                                </select>
+                            </div>
+
+                            <!-- Had Cabin -->
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="hasCabin" name="hasCabin">
+                                    <span class="checkbox-text">Had Cabin</span>
+                                </label>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn--primary btn--lg btn--full-width" id="predictBtn">
+                                    <span class="btn-text">Predict Survival</span>
+                                    <span class="loading-spinner hidden">⟳</span>
+                                </button>
+                                <button type="button" class="btn btn--outline btn--full-width" id="resetBtn">Clear Form</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Example Passengers -->
+                <div class="example-passengers">
+                    <h3>Try Example Passengers</h3>
+                    <div class="examples-grid">
+                        <button class="example-btn" data-passenger="rose">
+                            <strong>Rose DeWitt Bukater</strong>
+                            <span>Wealthy first-class passenger</span>
+                        </button>
+                        <button class="example-btn" data-passenger="jack">
+                            <strong>Jack Dawson</strong>
+                            <span>Poor third-class passenger</span>
+                        </button>
+                        <button class="example-btn" data-passenger="emma">
+                            <strong>Little Emma</strong>
+                            <span>Child traveling with parents</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section hidden" id="resultsSection">
+                <div class="card">
+                    <div class="card__header">
+                        <h2>Prediction Results</h2>
+                    </div>
+                    <div class="card__body">
+                        <!-- Survival Indicator -->
+                        <div class="survival-indicator" id="survivalIndicator">
+                            <div class="survival-icon" id="survivalIcon"></div>
+                            <div class="survival-text" id="survivalText"></div>
+                        </div>
+
+                        <!-- Probability Bar -->
+                        <div class="probability-section">
+                            <div class="probability-label">Survival Probability</div>
+                            <div class="probability-bar">
+                                <div class="probability-fill" id="probabilityFill"></div>
+                            </div>
+                            <div class="probability-percentage" id="probabilityPercentage"></div>
+                        </div>
+
+                        <!-- Passenger Summary -->
+                        <div class="passenger-summary" id="passengerSummary">
+                            <h3>Passenger Details</h3>
+                            <div class="summary-grid" id="summaryGrid"></div>
+                        </div>
+
+                        <!-- Key Factors -->
+                        <div class="key-factors" id="keyFactors">
+                            <h3>Key Factors Influencing Prediction</h3>
+                            <div class="factors-list" id="factorsList"></div>
+                        </div>
+
+                        <button class="btn btn--secondary btn--full-width" id="tryAnotherBtn">Try Another Prediction</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Educational Content -->
+            <section class="educational-section">
+                <div class="education-grid">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>How It Works</h3>
+                            <p>This predictor uses a machine learning model trained on historical Titanic passenger data. The logistic regression algorithm analyzes factors like passenger class, gender, age, and fare to predict survival probability.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Key Survival Factors</h3>
+                            <ul>
+                                <li><strong>Gender:</strong> Women had higher survival rates</li>
+                                <li><strong>Class:</strong> First-class passengers survived more</li>
+                                <li><strong>Age:</strong> Children had better survival chances</li>
+                                <li><strong>Cabin:</strong> Having a cabin indicated better location</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Model Performance</h3>
+                            <div class="performance-stats">
+                                <div class="stat">
+                                    <span class="stat-value">73.7%</span>
+                                    <span class="stat-label">Accuracy</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">66.7%</span>
+                                    <span class="stat-label">Precision</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">55.4%</span>
+                                    <span class="stat-label">Recall</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Historical Context</h3>
+                            <p>The RMS Titanic sank on April 15, 1912. Of the estimated 2,224 passengers and crew aboard, more than 1,500 died, making it one of the deadliest maritime disasters in history.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 Titanic Survival Predictor | Machine Learning Demo Project</p>
+            <div class="footer-links">
+                <a href="https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/eeb8a44b494b3008e9b2fc8270a6846e/6f3fc3f4-bcd6-4dd5-a042-a94a9c86e113/bd5a3272.py" target="_blank">View Python Code</a>
+                <a href="https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/eeb8a44b494b3008e9b2fc8270a6846e/3e844b6a-f3a5-4aa0-b8fc-11324b597c47/pdf_5b687956.pdf" target="_blank">Download Report</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
